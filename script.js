@@ -112,21 +112,14 @@ document.getElementById("withdrawBtn").addEventListener("click", async () => {
   }
 });
 
-document.getElementById("balanceBtn").addEventListener("click", async () => {
-    try {
-      if (!web3 || !contract || !account) {
-        throw new Error("Not connected. Please connect first.");
-      }
-      console.log("Contract address:", contract.options.address);
-      console.log("Caller account:", account);
-      const balance = await contract.methods
-        .checkBalance()
-        .call({ from: account });
-      console.log("Raw balance:", balance);
-      const balanceInEther = web3.utils.fromWei(balance, "ether");
-      logOutput(`Your balance: ${balanceInEther} ETH`);
-    } catch (err) {
-      console.error("Full error:", err);
-      logOutput(`Error: ${err.message}`);
-    }
-  });
+document.getElementById("checkBalance").addEventListener("click", async () => {
+  try {
+    const balance = await contract.methods
+      .checkBalance()
+      .call({ from: account });
+    const ethBalance = web3.utils.fromWei(balance, "ether");
+    logOutput(`Balance: ${ethBalance} ETH`);
+  } catch (err) {
+    logOutput(`Error: ${err.message}`);
+  }
+});
